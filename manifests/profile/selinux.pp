@@ -3,7 +3,7 @@
 # @example Basic Usage
 #  include st2::profile::selinux
 #
-# TODO: Read about this part to understand it bette
+# TODO: Read about this part to understand it better
 class st2::profile::selinux inherits st2::params {
   # note: the selinux module downcases the mode in the fact
   if ( ($facts['os']['family'] == 'RedHat') and ($facts['os']['selinux']['current_mode'] == 'enforcing')) {
@@ -20,7 +20,7 @@ class st2::profile::selinux inherits st2::params {
     }
 
     # nginx doesn't so we have to enable this here
-    selinux::boolean {'st2 nginx httpd_can_network_connect':
+    selinux::boolean { 'st2 nginx httpd_can_network_connect':
       ensure => 'on',
       name   => 'httpd_can_network_connect',
     }
