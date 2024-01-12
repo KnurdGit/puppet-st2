@@ -14,10 +14,11 @@
 # @param [St2::Repository] repository
 #   Release repository to enable
 #
+# TODO: Check if this cript uses actual repositories 
 class st2::repo (
-  Enum['present', 'absent'] $ensure = 'present',
-  St2::Repository $repository = $st2::repository,
-  Boolean $manage_epel_repo = true,
+  Enum['present', 'absent'] $ensure           = 'present',
+  St2::Repository           $repository       = $st2::repository,
+  Boolean                   $manage_epel_repo = true,
 ) inherits st2 {
   case $facts['os']['family'] {
     'RedHat': {
