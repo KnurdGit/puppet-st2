@@ -18,5 +18,4 @@ class st2::notices {
     Please email us at support@stackstorm.com if you are interested in trying it
     out and providing feedback
     |-EOF
-
 }
