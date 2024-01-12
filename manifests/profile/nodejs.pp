@@ -17,13 +17,11 @@
 # @param version
 #   Version of NodeJS to install. If not provided it will be auto-calcuated based on $st2::version
 #
-class st2::profile::nodejs(
-  $manage_repo = $st2::nodejs_manage_repo,
-  $version     = $st2::nodejs_version,
+class st2::profile::nodejs (
+  Boolean $manage_repo = $st2::nodejs_manage_repo,
+  String  $version     = $st2::nodejs_version,
 ) inherits st2 {
-
   $use_rhel7_builtin = false
-
   # if the StackStorm version is >= 3.5.0 then use NodeJS 14.x
   # if the StackStorm version is >= 2.10.0 then use NodeJS 10.x
   # if the StackStorm version is 2.10.0 < and >= 2.4.0 then use NodeJS 6.x
@@ -52,8 +50,7 @@ class st2::profile::nodejs(
 
   # Red Hat 7.x + already have NodeJS 6.x installed
   # trying to install from nodesource repos fails, so just use the builtin
-  if ($facts['os']['family'] == 'RedHat' and
-      versioncmp($facts['os']['release']['major'], '7') >= 0) {
+  if ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '7') >= 0) {
     if $use_rhel7_builtin {
       class { 'nodejs':
         manage_package_repo => false,
@@ -72,7 +69,7 @@ class st2::profile::nodejs(
       # because the npm package from EPEL has dependencies on the nodejs
       # and st2chatops package.
       # This allows us go upgrade RHEL7 clients from NodeJS 6 -> 10
-      Package<| title == $::nodejs::npm_package_name |> {
+      Package<| title == $nodejs::npm_package_name |> {
         uninstall_options => ['--nodeps'],
         provider          => 'rpm',
       }
