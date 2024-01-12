@@ -64,23 +64,23 @@
 #   }
 #
 class st2::profile::chatops (
-  $version                      = $st2::version,
-  $hubot_log_level              = $st2::chatops_hubot_log_level,
-  $hubot_express_port           = $st2::chatops_hubot_express_port,
-  $tls_cert_reject_unauthorized = $st2::chatops_tls_cert_reject_unauthorized,
-  $hubot_name                   = $st2::chatops_hubot_name,
-  $hubot_alias                  = $st2::chatops_hubot_alias,
-  $npm_packages                 = $st2::chatops_adapter,
-  $adapter_config               = $st2::chatops_adapter_conf,
-  $api_key                      = $st2::chatops_api_key,
-  $st2_hostname                 = $st2::chatops_st2_hostname,
-  $web_url                      = $st2::chatops_web_url,
-  $api_url                      = $st2::chatops_api_url,
-  $auth_url                     = $st2::chatops_auth_url,
-  $auth_username                = $st2::cli_username,
-  $auth_password                = $st2::cli_password,
+  String $version                      = $st2::version,
+  String $hubot_log_level              = $st2::chatops_hubot_log_level,
+  String $hubot_express_port           = $st2::chatops_hubot_express_port,
+  String $tls_cert_reject_unauthorized = $st2::chatops_tls_cert_reject_unauthorized,
+  String $hubot_name                   = $st2::chatops_hubot_name,
+  String $hubot_alias                  = $st2::chatops_hubot_alias,
+  Hash   $npm_packages                 = $st2::chatops_adapter,
+  Hash   $adapter_config               = $st2::chatops_adapter_conf,
+  String $api_key                      = $st2::chatops_api_key,
+  String $st2_hostname                 = $st2::chatops_st2_hostname,
+  String $web_url                      = $st2::chatops_web_url,
+  String $api_url                      = $st2::chatops_api_url,
+  String $auth_url                     = $st2::chatops_auth_url,
+  String $auth_username                = $st2::cli_username,
+  String $auth_password                = $st2::cli_password,
 ) inherits st2 {
-  include 'st2::params'
+  include st2::params
 
   $_chatops_packages = $st2::params::st2_chatops_packages
   $_chatops_dir = $st2::params::st2_chatops_dir
