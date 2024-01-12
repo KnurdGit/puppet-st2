@@ -38,6 +38,7 @@ class st2::profile::rabbitmq (
   Integer $erlang_rhel_repo_gpgcheck      = $st2::erlang_rhel_repo_gpgcheck,
 ) inherits st2 {
   # RHEL 8 Requires another repo in addition to epel to be installed
+  # TODO: I think we can use erlang module to manage this configuration
   if ($facts['os']['family'] == 'RedHat') {
     $repos_ensure = true
 
@@ -96,6 +97,7 @@ class st2::profile::rabbitmq (
     $repos_ensure = false
   }
 
+  # TODO: Use rabbitmq module to manage all of this
   # In new versions of the RabbitMQ module we need to explicitly turn off
   # the ranch TCP settings so that Kombu can connect via AMQP
   class { 'rabbitmq' :
