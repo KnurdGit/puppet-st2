@@ -1,9 +1,7 @@
 # @summary Creates and manages StackStorm application users (flat_file auth only)
 #
-# @param name
+# @param username 
 #   Name of the user
-# @param ensure
-#   Ensure user exists or not
 # @param password
 #   User's password
 #
@@ -12,15 +10,15 @@
 #    password => 'neato!',
 #  }
 #
-define st2::auth_user(
-  $ensure   = present,
-  $password = undef,
+class st2::auth_user (
+  String $username = undef,
+  String $password = undef,
 ) {
   include st2::auth::flat_file
   $_htpasswd_file = $st2::auth::flat_file::htpasswd_file
 
   httpauth { $name:
-    ensure    => $ensure,
+    ensure    => present,
     password  => $password,
     mechanism => 'basic',
     file      => $_htpasswd_file,
@@ -29,6 +27,7 @@ define st2::auth_user(
 
   ########################################
   ## Dependencies
+  # TODO: Check if we really need this
   Package<| tag == 'st2::server::packages' |>
   -> Httpauth[$name]
   -> Service<| tag == 'st2::service' |>

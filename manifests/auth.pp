@@ -57,15 +57,14 @@
 #  }
 #
 class st2::auth (
-  $backend        = $st2::auth_backend,
-  $backend_config = $st2::auth_backend_config,
-  $debug          = $st2::auth_debug,
-  $mode           = $st2::auth_mode,
-  $use_ssl        = $st2::use_ssl,
-  $ssl_cert       = $st2::ssl_cert,
-  $ssl_key        = $st2::ssl_key,
+  String  $backend        = $st2::auth_backend,
+  String  $backend_config = $st2::auth_backend_config,
+  Boolean $debug          = $st2::auth_debug,
+  String  $mode           = $st2::auth_mode,
+  Boolean $use_ssl        = $st2::use_ssl,
+  String  $ssl_cert       = $st2::ssl_cert,
+  String  $ssl_key        = $st2::ssl_key,
 ) inherits st2 {
-
   if !defined(Class['st2::auth::common']) {
     class { 'st2::auth::common':
       debug    => $debug,
@@ -88,9 +87,10 @@ class st2::auth (
   if $_backend_class == undef {
     fail("[st2::auth] Unknown backend: ${backend}")
   }
+  # TODO: What the hell?
   if !defined(Class[$_backend_class]) {
     create_resources('class', {
-      "${_backend_class}" => $backend_config,
+        "${_backend_class}" => $backend_config,
     })
   }
 }
