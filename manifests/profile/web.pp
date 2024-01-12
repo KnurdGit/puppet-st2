@@ -60,19 +60,19 @@
 #     ],
 #   }
 #
-class st2::profile::web(
-  Variant[Array[String], String] $nginx_ssl_ciphers   = $st2::nginx_ssl_ciphers,
-  Variant[Array[String], String] $nginx_ssl_protocols = $st2::nginx_ssl_protocols,
-  Stdlib::Port $nginx_ssl_port                        = $st2::nginx_ssl_port,
-  String $nginx_client_max_body_size                  = $st2::nginx_client_max_body_size,
-  Boolean $ssl_cert_manage                            = $st2::ssl_cert_manage,
-  Stdlib::Absolutepath $ssl_dir                       = $st2::ssl_dir,
-  String $ssl_cert                                    = $st2::ssl_cert,
-  String $ssl_key                                     = $st2::ssl_key,
-  String $version                                     = $st2::version,
-  String $web_root                                    = $st2::web_root,
-  Integer $basicstatus_port                           = $st2::nginx_basicstatus_port,
-  Boolean $basicstatus_enabled                        = $st2::nginx_basicstatus_enabled,
+class st2::profile::web (
+  Variant[Array[String], String] $nginx_ssl_ciphers          = $st2::nginx_ssl_ciphers,
+  Variant[Array[String], String] $nginx_ssl_protocols        = $st2::nginx_ssl_protocols,
+  Stdlib::Port                   $nginx_ssl_port             = $st2::nginx_ssl_port,
+  String                         $nginx_client_max_body_size = $st2::nginx_client_max_body_size,
+  Boolean                        $ssl_cert_manage            = $st2::ssl_cert_manage,
+  Stdlib::Absolutepath           $ssl_dir                    = $st2::ssl_dir,
+  String                         $ssl_cert                   = $st2::ssl_cert,
+  String                         $ssl_key                    = $st2::ssl_key,
+  String                         $version                    = $st2::version,
+  String                         $web_root                   = $st2::web_root,
+  Integer                        $basicstatus_port           = $st2::nginx_basicstatus_port,
+  Boolean                        $basicstatus_enabled        = $st2::nginx_basicstatus_enabled,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -142,7 +142,7 @@ class st2::profile::web(
   nginx::resource::server { $ssl_server:
     ensure               => present,
     listen_port          => $nginx_ssl_port,
-    index_files          => [ 'index.html' ],
+    index_files          => ['index.html'],
     access_log           => "${nginx::config::log_dir}/${ssl_server}.access.log",
     error_log            => "${nginx::config::log_dir}/${ssl_server}.error.log",
     # disable the built-in 'location /' (in puppet-nginx) so we can define our own below
@@ -166,6 +166,7 @@ class st2::profile::web(
     tag                  => ['st2', 'st2::frontend', 'st2::frontend::https'],
   }
 
+  # TODO: Check if we can use aggregation here
   # default settings for all locations
   $location_defaults = {
     ensure      => present,
@@ -174,7 +175,7 @@ class st2::profile::web(
     # added to the ssl site above
     ssl         => true,
     ssl_only    => true,
-    index_files => [ ],
+    index_files => [],
   }
 
   # the proxy locations contain all of the location settings plus some common
@@ -202,7 +203,7 @@ class st2::profile::web(
   # root website location for st2webui
   nginx::resource::location { '/':
     * => $location_defaults + {
-      index_files         => [ 'index.html' ],
+      index_files         => ['index.html'],
       www_root            => $web_root,
       location_cfg_append => {
         'sendfile'    => 'on',
