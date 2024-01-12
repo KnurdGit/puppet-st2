@@ -17,14 +17,13 @@
 #   }
 #   include st2::profile::fullinstall
 #
-class st2::params(
-  $packs_group_name = 'st2packs',
-  $hostname         = '127.0.0.1',
+class st2::params (
+  String $packs_group_name = 'st2packs',
+  String $hostname         = '127.0.0.1',
   ## StackStorm default credentials (change these!)
-  $admin_username   = 'st2admin',
-  $admin_password   = 'Ch@ngeMe',
+  String $admin_username   = 'st2admin',
+  String $admin_password   = 'Ch@ngeMe',
 ) {
-
   # SSL settings
   $use_ssl  = false
   $ssl_dir  = '/etc/ssl/st2'
@@ -32,8 +31,8 @@ class st2::params(
   $ssl_key  = '/etc/ssl/st2/st2.key'
 
   # Auth settings
-  $auth_mode = standalone
-  $auth_backend = flat_file
+  $auth_mode = 'standalone'
+  $auth_backend = 'flat_file'
   $auth_htpasswd_file = '/etc/st2/htpasswd'
   $auth_backend_config = {
     htpasswd_file => $auth_htpasswd_file,
@@ -192,6 +191,7 @@ class st2::params(
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
   $osname = downcase($facts['os']['name'])
+  # TODO: Look like we need to update repositories
   $rabbitmq_signing_key = 'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc'
   $rabbitmq_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
   $erlang_url = $facts['os']['family'] ? {
@@ -214,7 +214,6 @@ class st2::params(
   $redis_hostname = '127.0.0.1'
   $redis_port = 6379
   $redis_password = ''
-
 
   ## actionrunner config
   $actionrunner_workers = 10
