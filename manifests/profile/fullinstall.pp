@@ -19,37 +19,39 @@
 #   include st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
+  contain 'st2::profile::facter'
+  contain 'st2::repo'
+  contain 'st2::profile::selinux'
+  contain 'st2::profile::redis'
+  contain 'st2::profile::python'
+  contain 'st2::profile::nodejs'
+  contain 'st2::profile::rabbitmq'
+  contain 'st2::profile::mongodb'
+  contain 'st2::profile::client'
+  contain 'st2::profile::server'
+  contain 'st2::profile::web'
+  contain 'st2::profile::chatops'
 
-  anchor { 'st2::begin': }
-  -> anchor { 'st2::bootstrap': }
-  -> anchor { 'st2::pre_reqs': }
-  -> anchor { 'st2::main': }
-  -> anchor { 'st2::end': }
-
-  Anchor['st2::begin']
-  -> Anchor['st2::bootstrap']
-  -> class { 'st2::profile::facter': }
-  -> class { 'st2::repo': }
-  -> class { 'st2::profile::selinux': }
-  -> Anchor['st2::pre_reqs']
-  -> class { 'st2::profile::redis': }
-  -> class { 'st2::profile::python': }
-  -> class { 'st2::profile::nodejs': }
-  -> class { 'st2::profile::rabbitmq': }
-  -> class { 'st2::profile::mongodb': }
-  -> Anchor['st2::main']
-  -> class { 'st2::profile::client': }
-  -> class { 'st2::profile::server': }
-  -> class { 'st2::profile::web': }
-  -> class { 'st2::profile::chatops': }
-  -> Anchor['st2::end']
+  Class['st2::profile::facter']
+  -> Class['st2::repo']
+  -> Class['st2::profile::selinux']
+  -> Class['st2::profile::redis']
+  -> Class['st2::profile::python']
+  -> Class['st2::profile::nodejs']
+  -> Class['st2::profile::rabbitmq']
+  -> Class['st2::profile::mongodb']
+  -> Class['st2::profile::client']
+  -> Class['st2::profile::server']
+  -> Class['st2::profile::web']
+  -> Class['st2::profile::chatops']
 
   include st2::auth
   include st2::packs
   include st2::kvs
 
   # If user has not defined a pack "st2", install it from the Exchange.
+  # TODO:  Check if we can remove this and just always install st2 pack
   if ! defined(St2::Pack['st2']) {
-    ensure_resource('st2::pack', 'st2', {'ensure' => 'present'})
+    ensure_resource('st2::pack', 'st2', { 'ensure' => 'present' })
   }
 }
