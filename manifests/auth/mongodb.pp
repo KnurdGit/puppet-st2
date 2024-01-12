@@ -36,16 +36,17 @@
 #    db_name: "myauthdb"
 #
 class st2::auth::mongodb (
-  $conf_file   = $st2::conf_file,
-  $db_host     = $st2::db_host,
-  $db_port     = $st2::db_port,
-  $db_name     = 'st2auth',
-  $db_auth     = $st2::mongodb_auth,
-  $db_username = $st2::db_username,
-  $db_password = $st2::db_password,
+  String $conf_file   = $st2::conf_file,
+  String $db_host     = $st2::db_host,
+  Integer $db_port     = $st2::db_port,
+  Integer $db_name     = 'st2auth',
+  Boolean $db_auth     = $st2::mongodb_auth,
+  String $db_username = $st2::db_username,
+  String $db_password = $st2::db_password,
 ) inherits st2 {
   include st2::auth::common
 
+  # TODO: Will be better to use template or some other way
   if $db_auth {
     $_kwargs = "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\
       \"db_name\": \"${db_name}\", \"db_username\": \"${db_username}\", \
@@ -73,6 +74,7 @@ class st2::auth::mongodb (
     tag     => 'st2::config',
   }
 
+  # TODO: Do we really need this package?
   # install the backend package
   python::pip { 'st2-auth-backend-mongodb':
     ensure     => present,
