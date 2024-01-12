@@ -24,7 +24,6 @@ class st2::profile::selinux inherits st2::params {
       ensure => 'on',
       name   => 'httpd_can_network_connect',
     }
-
     # note: rabbitmq puppet module manages its own SELinux config
   }
 }
