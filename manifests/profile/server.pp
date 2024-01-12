@@ -41,35 +41,35 @@
 #  include st2::profile::server
 #
 class st2::profile::server (
-  $version                = $st2::version,
-  $conf_dir               = $st2::conf_dir,
-  $conf_file              = $st2::conf_file,
-  $auth                   = $st2::auth,
-  $actionrunner_workers   = $st2::actionrunner_workers,
-  $syslog                 = $st2::syslog,
-  $syslog_host            = $st2::syslog_host,
-  $syslog_port            = $st2::syslog_port,
-  $syslog_facility        = $st2::syslog_facility,
-  $syslog_protocol        = $st2::syslog_protocol,
-  $st2api_listen_ip       = '127.0.0.1',
-  $st2api_listen_port     = '9101',
-  $st2auth_listen_ip      = '127.0.0.1',
-  $st2auth_listen_port    = '9100',
-  $ssh_key_location       = $st2::ssh_key_location,
-  $ng_init                = $st2::ng_init,
-  $db_username            = $st2::db_username,
-  $db_password            = $st2::db_password,
-  $rabbitmq_username      = $st2::rabbitmq_username,
-  $rabbitmq_password      = $st2::rabbitmq_password,
-  $rabbitmq_hostname      = $st2::rabbitmq_hostname,
-  $rabbitmq_port          = $st2::rabbitmq_port,
-  $rabbitmq_vhost         = $st2::rabbitmq_vhost,
-  $redis_hostname         = $st2::redis_hostname,
-  $redis_port             = $st2::redis_port,
-  $redis_password         = $st2::redis_password,
-  $index_url              = $st2::index_url,
-  $packs_group            = $st2::packs_group_name,
-  $validate_output_schema = $st2::validate_output_schema,
+  String  $version                = $st2::version,
+  String  $conf_dir               = $st2::conf_dir,
+  String  $conf_file              = $st2::conf_file,
+  Boolean $auth                   = $st2::auth,
+  Integer $actionrunner_workers   = $st2::actionrunner_workers,
+  Boolean $syslog                 = $st2::syslog,
+  String  $syslog_host            = $st2::syslog_host,
+  Integer $syslog_port            = $st2::syslog_port,
+  String  $syslog_facility        = $st2::syslog_facility,
+  String  $syslog_protocol        = $st2::syslog_protocol,
+  String  $st2api_listen_ip       = '127.0.0.1',
+  String  $st2api_listen_port     = '9101',
+  String  $st2auth_listen_ip      = '127.0.0.1',
+  String  $st2auth_listen_port    = '9100',
+  String  $ssh_key_location       = $st2::ssh_key_location,
+  Boolean $ng_init                = $st2::ng_init,
+  String  $db_username            = $st2::db_username,
+  String  $db_password            = $st2::db_password,
+  String  $rabbitmq_username      = $st2::rabbitmq_username,
+  String  $rabbitmq_password      = $st2::rabbitmq_password,
+  String  $rabbitmq_hostname      = $st2::rabbitmq_hostname,
+  Integer $rabbitmq_port          = $st2::rabbitmq_port,
+  String  $rabbitmq_vhost         = $st2::rabbitmq_vhost,
+  String  $redis_hostname         = $st2::redis_hostname,
+  Integer $redis_port             = $st2::redis_port,
+  String  $redis_password         = $st2::redis_password,
+  String  $index_url              = $st2::index_url,
+  String  $packs_group            = $st2::packs_group_name,
+  Boolean $validate_output_schema = $st2::validate_output_schema,
 ) inherits st2 {
   include st2::notices
   include st2::params
@@ -94,41 +94,25 @@ class st2::profile::server (
     tag    => ['st2::packages', 'st2::server::packages'],
   }
 
-  ensure_resource('file', '/opt/stackstorm', {
-    'ensure' => 'directory',
-    'owner'  => 'root',
-    'group'  => 'root',
-    'mode'   => '0755',
-    'tag'    => 'st2::server',
-  })
+  group { $packs_group:
+    ensure => present,
+  }
 
-  ensure_resource('group', $packs_group, {
-    'ensure' => present,
-  })
-
-  ensure_resource('file', '/opt/stackstorm/configs', {
-    'ensure'  => 'directory',
-    'owner'   => 'st2',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'tag'     => 'st2::server',
-  })
-
-  ensure_resource('file', '/opt/stackstorm/packs', {
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => $packs_group,
-    'mode'    => '0775',
-    'tag'     => 'st2::server',
-  })
-
-  ensure_resource('file', '/opt/stackstorm/virtualenvs', {
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => $packs_group,
-    'mode'    => '0755',
-    'tag'     => 'st2::server',
-  })
+  file {
+    default:
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server';
+    '/opt/stackstorm':;
+    '/opt/stackstorm/configs':
+      owner => 'st2';
+    '/opt/stackstorm/packs':
+      group => $packs_group;
+    '/opt/stackstorm/virtualenvs':
+      group => $packs_group;
+  }
 
   recursive_file_permissions { '/opt/stackstorm/packs':
     owner => 'root',
@@ -178,6 +162,7 @@ class st2::profile::server (
   }
 
   ## API Settings
+  # TODO: Try to use aggregation here
   ini_setting { 'api_listen_ip':
     ensure  => present,
     path    => $conf_file,
@@ -287,7 +272,6 @@ class st2::profile::server (
     value   => $_redis_url,
     tag     => 'st2::config',
   }
-
 
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
