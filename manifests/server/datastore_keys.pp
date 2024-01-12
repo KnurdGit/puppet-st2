@@ -17,9 +17,9 @@
 #   }
 #
 class st2::server::datastore_keys (
-  $conf_file = $st2::conf_file,
-  $keys_dir  = $st2::datastore_keys_dir,
-  $key_path  = $st2::datastore_key_path,
+  String $conf_file = $st2::conf_file,
+  String $keys_dir  = $st2::datastore_keys_dir,
+  String $key_path  = $st2::datastore_key_path,
 ) inherits st2 {
   ## Directory
   file { $keys_dir:
