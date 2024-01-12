@@ -11,6 +11,7 @@
 #      bind_ip => '127.0.0.1',
 #    }
 #
+# TODO: add more parameters for redis
 class st2::profile::redis (
   String  $bind_ip = $st2::redis_bind_ip,
 ) inherits st2 {
