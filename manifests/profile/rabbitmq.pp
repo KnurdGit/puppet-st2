@@ -22,22 +22,21 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username                       = $st2::rabbitmq_username,
-  $password                       = $st2::rabbitmq_password,
-  $port                           = $st2::rabbitmq_port,
-  $bind_ip                        = $st2::rabbitmq_bind_ip,
-  $vhost                          = $st2::rabbitmq_vhost,
-  $erlang_url                     = $st2::erlang_url,
-  $erlang_key                     = $st2::erlang_key,
-  $erlang_key_id                  = $st2::erlang_key_id,
-  $erlang_key_source              = $st2::erlang_key_source,
-  $erlang_packages                = $st2::erlang_packages,
-  $erlang_rhel_sslcacert_location = $st2::erlang_rhel_sslcacert_location,
-  $erlang_rhel_sslverify          = $st2::erlang_rhel_sslverify,
-  $erlang_rhel_gpgcheck           = $st2::erlang_rhel_gpgcheck,
-  $erlang_rhel_repo_gpgcheck      = $st2::erlang_rhel_repo_gpgcheck,
+  String  $username                       = $st2::rabbitmq_username,
+  String  $password                       = $st2::rabbitmq_password,
+  Integer $port                           = $st2::rabbitmq_port,
+  String  $bind_ip                        = $st2::rabbitmq_bind_ip,
+  String  $vhost                          = $st2::rabbitmq_vhost,
+  Array   $erlang_url                     = $st2::erlang_url,
+  String  $erlang_key                     = $st2::erlang_key,
+  String  $erlang_key_id                  = $st2::erlang_key_id,
+  String  $erlang_key_source              = $st2::erlang_key_source,
+  String  $erlang_packages                = $st2::erlang_packages,
+  String  $erlang_rhel_sslcacert_location = $st2::erlang_rhel_sslcacert_location,
+  Integer $erlang_rhel_sslverify          = $st2::erlang_rhel_sslverify,
+  Integer $erlang_rhel_gpgcheck           = $st2::erlang_rhel_gpgcheck,
+  Integer $erlang_rhel_repo_gpgcheck      = $st2::erlang_rhel_repo_gpgcheck,
 ) inherits st2 {
-
   # RHEL 8 Requires another repo in addition to epel to be installed
   if ($facts['os']['family'] == 'RedHat') {
     $repos_ensure = true
