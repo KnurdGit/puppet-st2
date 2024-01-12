@@ -15,10 +15,6 @@
 class st2::profile::redis (
   String  $bind_ip = $st2::redis_bind_ip,
 ) inherits st2 {
-
-  class { 'redis':
-      bind => $bind_ip,
-  }
-
+  class { 'redis': bind => $bind_ip }
   contain redis
 }
