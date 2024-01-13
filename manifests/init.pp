@@ -343,6 +343,7 @@ class st2 (
   Integer          $scheduler_pool_size                  = $st2::params::scheduler_pool_size,
   Hash             $chatops_adapter                      = $st2::params::chatops_adapter,
   Hash             $chatops_adapter_conf                 = $st2::params::chatops_adapter_conf,
+  # TODO: Why is port stored as a string?
   String           $chatops_hubot_log_level              = $st2::params::hubot_log_level,
   String           $chatops_hubot_express_port           = $st2::params::hubot_express_port,
   String           $chatops_tls_cert_reject_unauthorized = $st2::params::tls_cert_reject_unauthorized,
