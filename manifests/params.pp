@@ -183,6 +183,23 @@ class st2::params (
   $mongodb_st2_username = 'stackstorm'
   $mongodb_st2_roles = ['readWrite']
 
+  # # TODO: Look like we need to update repositories - https://rabbitmq.com/install-debian.html#apt-quick-start-cloudsmith
+  # $team_rabbitmq_main_signing_key = 'https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA'
+  # $cloudsmith_rabbitmq_repository_key = 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key'
+  # $cloudsmith_rabbitmq_erlang_key = 'https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key'
+
+  # $erlang_url = $facts['os']['family'] ? {
+  #   # TODO: research apt module. I must be better way to do that.
+  #   'Debian' => [
+  #     "deb [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu ${osname} main",
+  #     "deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu ${osname} main",
+  #     "deb [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu ${osname} main",
+  #     "deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.novemberain.com/rabbitmq/rabbitmq-erlang/deb/ubuntu ${osname} main",
+  #   ],
+  #   # TODO: Also update repostiory for RedHat
+  #   'RedHat' => "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch",
+  # }
+
   ## RabbitMQ
   $rabbitmq_username = $admin_username
   $rabbitmq_password = $admin_password

@@ -24,21 +24,22 @@
 #    ssh_private_key => '----- BEGIN RSA PRIVATE KEY -----\nDEADBEEF\n----- END RSA PRIVATE KEY -----',
 #  }
 #
-define st2::user(
-  $client            = true,
-  $server            = false,
-  $create_sudo_entry = false,
-  $ssh_key_type      = undef,
-  $ssh_public_key    = undef,
-  $ssh_private_key   = undef,
-  $groups            = undef,
-  $ssh_dir           = "/home/${name}/.ssh",
+define st2::user (
+  Boolean $client            = true,
+  Boolean $server            = false,
+  Boolean $create_sudo_entry = false,
+  String  $ssh_key_type      = undef,
+  String  $ssh_public_key    = undef,
+  String  $ssh_private_key   = undef,
+  String  $groups            = undef,
+  String  $ssh_dir           = "/home/${name}/.ssh",
 ) {
   include st2::params
 
   $_packs_group_name = $st2::params::packs_group_name
 
   if $create_sudo_entry {
+    # TODO: That's not a good idea to manage sudo 
     if !defined(Class['sudo']) and !defined(Class['sudo']) {
       class { 'sudo':
         # do not purge files in /etc/sudoers.d/*
@@ -50,35 +51,40 @@ define st2::user(
       }
     }
 
+    # TODO: I think it will be better to use just regular types
     ensure_resource('sudo::conf', $name, {
-      'priority' => '10',
-      # note: passes in $name variable into template
-      'content'  => template('st2/etc/sudoers.d/user.erb'),
+        'priority' => '10',
+        # note: passes in $name variable into template
+        'content'  => template('st2/etc/sudoers.d/user.erb'),
     })
   }
 
+  # TODO: I think it will be better to use just regular types
   ensure_resource('group', $_packs_group_name, {
-    'ensure' => present,
+      'ensure' => present,
   })
 
+  # TODO: I think it will be better to use just regular types
   ensure_resource('group', $name, {
-    'ensure' => present,
+      'ensure' => present,
   })
 
+  # TODO: I think it will be better to use just regular types
   ensure_resource('user', $name, {
-    'ensure'     => present,
-    'shell'      => '/bin/bash',
-    'gid'        => $name,
-    'groups'     => $groups,
-    'managehome' => true,
+      'ensure'     => present,
+      'shell'      => '/bin/bash',
+      'gid'        => $name,
+      'groups'     => $groups,
+      'managehome' => true,
   })
 
   ### Setup SSH Keys ###
+  # TODO: I think it will be better to use just regular types
   ensure_resource('file', $ssh_dir, {
-    'ensure' => directory,
-    'owner'  => $name,
-    'group'  => $name,
-    'mode'   => '0700',
+      'ensure' => directory,
+      'owner'  => $name,
+      'group'  => $name,
+      'mode'   => '0700',
   })
 
   if $server {
@@ -96,7 +102,7 @@ define st2::user(
         path    => ['/usr/bin', '/sbin', '/bin'],
         require => File[$ssh_dir],
         before  => [File["${ssh_dir}/st2_${name}_key"],
-                    File["${ssh_dir}/st2_${name}_key.pub"]],
+        File["${ssh_dir}/st2_${name}_key.pub"]],
       }
 
       # define these files so proper owner and permissions are set
@@ -138,10 +144,10 @@ define st2::user(
     if $_ssh_keygen {
       # set proper owner + permissions on authorized keys
       ensure_resource('file', "${ssh_dir}/authorized_keys", {
-        'ensure' => file,
-        'owner'  => $name,
-        'group'  => $name,
-        'mode'   => '0600'
+          'ensure' => file,
+          'owner'  => $name,
+          'group'  => $name,
+          'mode'   => '0600'
       })
 
       # add this user's key to authorized_keys

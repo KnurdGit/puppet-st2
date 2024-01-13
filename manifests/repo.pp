@@ -17,6 +17,8 @@
 # TODO: Check if this manifest uses actual repositories 
 class st2::repo (
   Enum['present', 'absent'] $ensure           = 'present',
+  # TODO: St2::Repository needed just to validate if passed parameter is valid repository 
+  # TODO: I don't think that we really need this type here
   St2::Repository           $repository       = $st2::repository,
   Boolean                   $manage_epel_repo = true,
 ) inherits st2 {

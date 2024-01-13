@@ -16,15 +16,13 @@
 #   Name of all the rulesengine services
 #
 class st2::rulesengine (
-  $rulesengine_num      = $st2::rulesengine_num,
-  $rulesengine_services = $st2::params::rulesengine_services,
+  Integer $rulesengine_num      = $st2::rulesengine_num,
+  Array   $rulesengine_services = $st2::params::rulesengine_services,
 ) inherits st2 {
-
   $_logger_config = $st2::syslog ? {
     true    => 'syslog',
     default => 'logging',
   }
-
   ########################################
   ## Config
   ini_setting { 'rulesengine_logging':

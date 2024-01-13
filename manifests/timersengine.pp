@@ -22,13 +22,11 @@
 #   Timezone pertaining to the location where st2 is run.
 #
 class st2::timersengine (
-  $enabled  = $st2::timersengine_enabled,
-  $timezone = $st2::timersengine_timezone,
+  Boolean $enabled  = $st2::timersengine_enabled,
+  String  $timezone = $st2::timersengine_timezone,
 ) inherits st2 {
-
   # st2timersengine was introduced in 2.9.0
   if st2::version_ge('2.9.0') {
-
     $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',

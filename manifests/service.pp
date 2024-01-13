@@ -15,10 +15,11 @@
 #    existing_services => ['st2workflowengine'],
 #  }
 #
-define st2::service(
-  $service_name,
-  $service_num,
-  $existing_services,
+# TODO: Research this manifest more
+define st2::service (
+  String  $service_name,
+  Integer $service_num,
+  Array   $existing_services,
 ) {
   if ($service_num > 1) {
     $additional_service = range('2', $service_num).reduce([]) |$memo, $number| {
@@ -45,9 +46,7 @@ define st2::service(
 
       $memo + [$new_service_name]
     }
-
     $_existing_services = $existing_services + $additional_service
-
   } else {
     $_existing_services = $existing_services
   }

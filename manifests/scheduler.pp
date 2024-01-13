@@ -28,16 +28,14 @@
 #   Name of all the scheduler services.
 #
 class st2::scheduler (
-  $sleep_interval     = $st2::scheduler_sleep_interval,
-  $gc_interval        = $st2::scheduler_gc_interval,
-  $pool_size          = $st2::scheduler_pool_size,
-  $scheduler_num      = $st2::scheduler_num,
-  $scheduler_services = $st2::params::scheduler_services
+  Integer $sleep_interval     = $st2::scheduler_sleep_interval,
+  Integer $gc_interval        = $st2::scheduler_gc_interval,
+  Integer $pool_size          = $st2::scheduler_pool_size,
+  Integer $scheduler_num      = $st2::scheduler_num,
+  Array   $scheduler_services = $st2::params::scheduler_services
 ) inherits st2 {
-
   # st2scheduler was introduced in 2.10.0
   if st2::version_ge('2.10.0') {
-
     $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',

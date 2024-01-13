@@ -16,6 +16,7 @@
 #  }
 #
 define st2::pack (
+  # TODO: This type has spec on backend. Need to research
   $ensure   = present,
   $pack     = $name,
   $repo_url = undef,

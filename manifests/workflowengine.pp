@@ -16,13 +16,11 @@
 #   Name of all the workflowengine services.
 #
 class st2::workflowengine (
-  $workflowengine_num      = $st2::workflowengine_num,
-  $workflowengine_services = $st2::params::workflowengine_services,
+  Integer $workflowengine_num      = $st2::workflowengine_num,
+  Array   $workflowengine_services = $st2::params::workflowengine_services,
 ) inherits st2 {
-
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {
-
     $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',
