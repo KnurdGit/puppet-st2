@@ -10,9 +10,9 @@
 #    password => 'neato!',
 #  }
 #
-class st2::auth_user (
-  String $username = undef,
-  String $password = undef,
+define st2::auth_user (
+  $username = undef,
+  $password = undef,
 ) {
   include st2::auth::flat_file
   $_htpasswd_file = $st2::auth::flat_file::htpasswd_file
